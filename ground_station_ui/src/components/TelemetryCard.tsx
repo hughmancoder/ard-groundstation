@@ -1,5 +1,4 @@
 import React from "react";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { defaultData, TelemetryData } from "../types";
 import RocketSVG from "../assets/RocketSVG";
 

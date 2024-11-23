@@ -1,4 +1,4 @@
-#!/Users/hughsignoriello/Repos/ARD_Groundstation/backend/myenv/bin/python3.12
+#!/Users/hughsignoriello/Repos/ARD_Groundstation/ground_station/myenv/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys
