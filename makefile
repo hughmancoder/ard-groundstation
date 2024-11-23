@@ -1,19 +1,16 @@
-REQUIREMENTS = backend/requirements.txt
+BACKEND_DIR = ground_station
+FRONTEND_DIR = ground_station_ui
 
-run-backend:
-	source backend/myenv/bin/activate && python3 backend/app.py
-
-# Install frontend dependencies
-install-frontend:
-	cd gui && npm install
+run_ground_station:
+	source ${BACKEND_DIR}/myenv/bin/activate && python3 ${BACKEND_DIR}/app.py
 
 # Run the frontend development server
-run-frontend:
-	cd gui && npm run dev
+run_ground_station_ui:
+	cd ${FRONTEND_DIR} && npm run dev
 
 clean:
 	rm -rf $(VENV)
 	rm -rf __pycache__
-	rm -rf gui/node_modules
-	rm -f gui/package-lock.json
-	rm -rf backend/__pycache__
+	rm -rf ${FRONTEND_DIR}/node_modules
+	rm -f ${FRONTEND_DIR}/package-lock.json
+	rm -rf ${BACKEND_DIR}/__pycache__
