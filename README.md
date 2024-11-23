@@ -16,19 +16,13 @@
 ### Installation
 
 ```bash
-
+cd groundstation
 rm -rf myenv
-cd ground_station
 python3 -m venv myenv
 source myenv/bin/activate
 pip install -r requirements.txt
-cd..
-cd ground_station_ui
+cd ..
+cd groundstation_ui
 npm install
 cd ..
-
 ```
-
-## Maintainers
-
-[Hugh Signoriello](https://github.com/hughmancoder)

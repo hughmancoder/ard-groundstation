@@ -1,11 +1,11 @@
-BACKEND_DIR = ground_station
-FRONTEND_DIR = ground_station_ui
+BACKEND_DIR = groundstation
+FRONTEND_DIR = groundstation_ui
 
-run_ground_station:
+run_groundstation:
 	source ${BACKEND_DIR}/myenv/bin/activate && python3 ${BACKEND_DIR}/app.py
 
 # Run the frontend development server
-run_ground_station_ui:
+run_groundstation_ui:
 	cd ${FRONTEND_DIR} && npm run dev
 
 clean:
