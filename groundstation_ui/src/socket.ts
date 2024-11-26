@@ -1,8 +1,11 @@
-import { io } from 'socket.io-client';
-import { BASE_URL } from './types';
+import { io, Socket } from "socket.io-client";
+import { BASE_URL } from "./types";
 
-const URL = process.env.NODE_ENV === 'production' ? undefined : BASE_URL;
+const URL =
+  process.env.NODE_ENV === "production" ? undefined : BASE_URL;
 
-export const socket = io(URL, {
-    autoConnect: false
-  });
+
+export const socket: Socket = io(URL, {
+  autoConnect: false,
+  transports: ["websocket"], 
+});

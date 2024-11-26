@@ -1,13 +1,15 @@
 
 
 export const BASE_URL = "http://127.0.0.1:5000" // "http://192.168.1.209:5000"
+const MAX_DATA_POINTS = 1000; 
+
+export type Status = "connected" | "disconnected" | "awaiting";
 
 export type Metric = {
   title: string;
   value: number | string;
   unit: string;
 };
-
 
 export type TelemetryData = {
   time: number;

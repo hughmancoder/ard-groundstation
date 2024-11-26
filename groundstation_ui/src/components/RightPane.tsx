@@ -20,23 +20,23 @@ const RightPane = ({data} : Props) => {
   ];
   return (
     <div className="w-64 space-y-8">
-      {metrics.map((pane, index) => (
+      {metrics.map((item, index) => (
         <div
           key={index}
           className={`flex justify-between items-end ${index === 4 ? "pt-14" : ""}`}
         >
           <div className="flex flex-col space-y-2">
-            <span className="text-md text-gray-300">{pane.title}</span>
+            <span className="text-md text-gray-300">{item.title}</span>
             <div className="relative w-36 h-1.5">
               <div className="w-36 absolute left-0 top-0 rounded-full h-1.5 bg-gray-600/20"></div>
               <div
                 className="absolute left-0 top-0 bg-blue rounded-full h-1.5"
-                style={{ width: `${calculatePercentage(pane.value, pane.max)}%` }}
+                style={{ width: `${calculatePercentage(item.value, item.max)}%` }}
               ></div>
             </div>
           </div>
-          <div className="pl-4 text-lg text-white whitespace-nowrap">
-            {pane.value} {pane.unit}
+          <div className="pl-6 text-lg text-white whitespace-nowrap">
+            {item.value.toFixed(2)} {item.unit}
           </div>
         </div>
       ))}

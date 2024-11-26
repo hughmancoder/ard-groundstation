@@ -19,7 +19,7 @@ const Settings: React.FC = () => {
   const handleConnectionToggle = () => {
     if (isConnected) {
       disconnectPort();
-    } else {
+    } else https://file+.vscode-resource.vscode-cdn.net/Users/hughsignoriello/Repos/ARD_Groundstation/groundstation_ui/public/ui-2.png?version%3D1732607261861{
       connectPort();
     }
   };
@@ -66,23 +66,7 @@ const Settings: React.FC = () => {
         >
           {isConnected ? "Disconnect" : "Connect"}
         </button>
-              {/* <button
-          onClick={connectPort}
-          disabled={!selectedPort}
-          className={`px-4 py-2 rounded-md text-white ${
-            selectedPort
-              ? "bg-blue-500 hover:bg-blue-600"
-              : "bg-gray-400 cursor-not-allowed"
-          }`}
-        >
-          Connect
-        </button>
-        <button
-          onClick={disconnectPort}
-          className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100"
-        >
-          Disconnect
-        </button> */}
+            
       </div>
     </div>
   );

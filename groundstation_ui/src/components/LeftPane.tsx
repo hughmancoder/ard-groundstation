@@ -1,9 +1,6 @@
 import React from "react";
-import { Metric as TMetric, TelemetryData } from "../types";
+import { Status, Metric as TMetric, TelemetryData } from "../types";
 import { Metric } from "./Metric";
-
-export type Status = "connected" | "disconnected" | "awaiting";
-
 
 const iconColors: Record<Status, string> = {
   connected: "text-green",
@@ -25,12 +22,13 @@ const getLabelColor = (status: Status): string => labelColors[status];
 
 interface Props {
   data: TelemetryData;
+  status: Status;
 }
 
-const LeftPane: React.FC<Props> = ({ data }) => {
+const LeftPane = ({ data, status } : Props) => {
 
   const connectionData = [
-    { title: "Serial Port", status: "connected" as Status },
+    { title: "Serial Port", status: status },
     { title: "Sensor Status", status: "disconnected" as Status },
   ];
 
