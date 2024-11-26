@@ -1,21 +1,44 @@
 /** @type {import('tailwindcss').Config} */
-const defaultTheme = require("tailwindcss/defaultTheme");
+import defaultTheme from "tailwindcss/defaultTheme";
+
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
-      colors: {
-        darkGradientStart: "#0c0d1a",
-        darkGradientEnd: "#121326",
-        primaryPurple: "#1A1C45",
-        secondaryPurple: "#8487AC",
+      fontFamily : {
+        sans : ['Lato', 'sans-serif']
       },
-      backgroundImage: {
-        "gradient-dark": "linear-gradient(to bottom, #0D122B, #1B1F42)",
+      fontSize : {
+        'xxxs' : '0.6875em',
+        'xxs' : '0.75rem',
+        'xs' : '0.8125rem',
+        '3xl' : '2rem',
       },
-      fontFamily: {
-        sans: ["InterVariable", ...defaultTheme.fontFamily.sans],
+      borderWidth : {
+        16 : '16px'
       },
+      colors : {
+        gray : {
+          600 : '#9499C3'
+        },
+        yellow : {
+          DEFAULT: '#FFD630'
+        },
+        red : {
+          DEFAULT: '#E72D2D'
+        },
+        blue : {
+          DEFAULT: '#298BFE',
+          900 : '#1A1C48'
+        },
+        green : {
+          DEFAULT : '#79F74B'
+        }
+      }
     },
   },
+  variants: {
+    extend: {},
+  },
+  plugins: [],
 };

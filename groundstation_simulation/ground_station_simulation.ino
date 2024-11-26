@@ -10,10 +10,10 @@ bool ledState = false; // Variable to store the current state of the LED
 // Define the telemetry data structure
 struct TelemetryPacket {
   uint32_t time;                   // 4 bytes
+  float altitude;                  // 4 bytes
   float bmpTemp;                   // 4 bytes
   float imuTemp;                   // 4 bytes
   float pressure;                  // 4 bytes
-  float altitude;                  // 4 bytes
   float accX, accY, accZ;          // 12 bytes
   float angVelX, angVelY, angVelZ; // 12 bytes
 } __attribute__((packed));         // Ensure no padding in the structure

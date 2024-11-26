@@ -1,3 +1,14 @@
+
+
+export const BASE_URL = "http://127.0.0.1:5000" // "http://192.168.1.209:5000"
+
+export type Metric = {
+  title: string;
+  value: number | string;
+  unit: string;
+};
+
+
 export type TelemetryData = {
   time: number;
   bmpTemp: number;

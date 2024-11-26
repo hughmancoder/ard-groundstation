@@ -6,31 +6,24 @@ const Settings: React.FC = () => {
     ports,
     selectedPort,
     setSelectedPort,
-    setPorts,
     connectPort,
     disconnectPort,
+    fetchPorts, 
+    isConnected
   } = useTelemetry();
 
   useEffect(() => {
-    const fetchPorts = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/ports");
-        const data = await response.json();
-        if (data.ports) {
-          setSelectedPort(""); // Reset selected port
-          setPorts(data.ports); // Update the ports list
-          console.log("Fetched Ports:", data.ports); // Debugging log
-        } else {
-          alert("No ports found!");
-        }
-      } catch (error) {
-        console.error("Error fetching ports:", error);
-        alert("Failed to fetch ports. Please try again.");
-      }
-    };
-
     fetchPorts();
-  }, [setPorts, setSelectedPort]);
+  }, []);
+
+  const handleConnectionToggle = () => {
+    if (isConnected) {
+      disconnectPort();
+    } else {
+      connectPort();
+    }
+  };
+
 
   return (
     <div className="px-6">
@@ -39,13 +32,11 @@ const Settings: React.FC = () => {
         <label htmlFor="portSelect" className="block text-lg font-medium">
           Serial Port Selection
         </label>
-        <>{JSON.stringify(ports)}</>
-        <>selected port {selectedPort}</>
-        <select
+        <select 
           id="portSelect"
-          value={selectedPort}
+          value={selectedPort ?? ""}
           onChange={(e) => setSelectedPort(e.target.value)}
-          className="block w-full p-2 border border-gray-300 rounded-md"
+          className="text-black block w-full p-2 border border-gray-300 rounded-md"
         >
           <option value="" disabled>
             {ports.length === 0 ? "Loading ports..." : "Select a port"}
@@ -59,6 +50,23 @@ const Settings: React.FC = () => {
       </div>
       <div className="flex space-x-4 mt-4">
         <button
+          onClick={fetchPorts}
+          className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100"
+        >
+          Refresh Ports
+        </button>
+        <button
+          onClick={handleConnectionToggle}
+          disabled={!selectedPort}
+          className={`px-4 py-2 rounded-md text-white ${
+            selectedPort
+              ? "bg-blue-500 hover:bg-blue-600"
+              : "bg-gray-400 cursor-not-allowed"
+          }`}
+        >
+          {isConnected ? "Disconnect" : "Connect"}
+        </button>
+              {/* <button
           onClick={connectPort}
           disabled={!selectedPort}
           className={`px-4 py-2 rounded-md text-white ${
@@ -74,7 +82,7 @@ const Settings: React.FC = () => {
           className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100"
         >
           Disconnect
-        </button>
+        </button> */}
       </div>
     </div>
   );

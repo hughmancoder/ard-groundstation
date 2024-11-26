@@ -3,12 +3,13 @@
 *.pyo
 *.pyd
 __pycache__/
-*.env
 *.venv
 *.myenv
 
 env/
 venv/
+myenv/
+
 ENV/
 ENV.bak/
 venv.bak/

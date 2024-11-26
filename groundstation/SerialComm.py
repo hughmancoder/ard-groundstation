@@ -74,16 +74,6 @@ class SerialComm:
                     break
 
 
-    def start_simulation(self, csv_path):
-        """Start a thread for simulating serial data from a CSV file."""
-        self.stop_threads = False
-        simulation_thread = threading.Thread(target=self.simulate_serial_output, args=(csv_path,))
-        simulation_thread.start()
-
-    def stop_simulation(self):
-        """Stop the simulation and clean up."""
-        self.stop_threads = True
-
     @staticmethod
     def list_serial_ports():
         """List available serial ports."""
