@@ -14,5 +14,5 @@ export const Metric: React.FC<Props> = ({ metrics, large = false }) => {
         {value} {unit}
       </span>
     </div>
-  );
+    );
 };
