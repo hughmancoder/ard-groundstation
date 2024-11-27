@@ -3,8 +3,13 @@ import sys
 import time
 import serial
 import struct
+import csv
 
-from constants import DATA_COLUMNS
+DATA_COLUMNS = [
+    'time', 'bmpTemp', 'imuTemp', 'pressure', 'altitude',
+    'accX', 'accY', 'accZ', 'angVelX', 'angVelY', 'angVelZ',
+]
+
 
 class SerialComm:
     def __init__(self, port_name=None, baudrate=9600, timeout=1, simulation_mode=False):
@@ -17,6 +22,7 @@ class SerialComm:
         self.PACKET_FORMAT = '<Iffffffffff'  
         self.PACKET_SIZE = struct.calcsize(self.PACKET_FORMAT)
         self.serial_data_buffer = []
+        self.CSV_FILE_NAME = "save.csv"
 
     def open_serial_port(self):
         self.stop_threads = False  # Reset stop flag when opening
@@ -40,13 +46,43 @@ class SerialComm:
             self.ser.close()
             print(f"Closed serial port: {self.port_name}")
 
-    def read_serial_data(self):
+    def read_serial_data_from_csv(self):
+        while not self.stop_threads:
+            if self.ser and self.ser.is_open:
+                try:
+                    # Read a line from the serial port
+                    raw_data = self.ser.readline().decode('utf-8').strip()
+                    print("Raw data:", raw_data)
+                    values = raw_data.split(",")
+                    if len(values) == len(DATA_COLUMNS):
+                        parsed_data = {DATA_COLUMNS[i]: float(values[i]) for i in range(len(DATA_COLUMNS))}
+                        
+                        # optionally write data to a CSV file
+                        # self.write_to_csv_file(parsed_data, DATA_COLUMNS)
+
+                        yield parsed_data
+
+                    else:
+                        print("Malformed line, skipping:", raw_data)
+
+                except serial.SerialException as e:
+                    print(f"Error reading from serial port: {e}")
+                    self.stop_threads = True
+                    break
+                except Exception as e:
+                    print(f"Parsing error: {e}")
+                    continue
+            else:
+                time.sleep(0.1)
+
+    def read_serial_data_from_binary_stream(self):
         while not self.stop_threads:
             if self.ser and self.ser.is_open:
                 try:
                     raw_data = self.ser.read(self.PACKET_SIZE)
                     if len(raw_data) == self.PACKET_SIZE:
                         data = struct.unpack(self.PACKET_FORMAT, raw_data)
+                        print("Received data:", data)
                         yield {
                             DATA_COLUMNS[i]: data[i] for i in range(len(DATA_COLUMNS))
                         }
@@ -89,3 +125,25 @@ class SerialComm:
         return result
     
     
+
+    def write_to_csv_file(data_dict, columns):
+        """
+        Writes a dictionary of data to a CSV file.
+        If the file doesn't exist, it creates it and writes the header.
+        
+        :param data_dict: Dictionary containing the data to write (one row).
+        :param columns: List of column names for the CSV file.
+        """
+        try:
+            # Open the file in append mode ('a') and create if it doesn't exist ('newline' prevents extra blank lines)
+            with open(self.CSV_FILE_NAME, mode='a', newline='') as csvfile:
+                writer = csv.DictWriter(csvfile, fieldnames=columns)
+                
+                # If the file is empty, write the header
+                if csvfile.tell() == 0:
+                    writer.writeheader()
+                
+                # Write the data row
+                writer.writerow(data_dict)
+        except Exception as e:
+            print(f"Error writing to CSV file: {e}")

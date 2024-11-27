@@ -71,7 +71,7 @@ def stream_telemetry():
 def stream_telemetry_background():
     print("Starting telemetry stream in background")
     try:
-        for data in serialComm.read_serial_data():
+        for data in serialComm.read_serial_data_from_binary_stream():
             print(f"Telemetry Data: {data}")
             # Use broadcast=True if you want to send to all connected clients
             socketio.emit("telemetry_data", data)
@@ -79,23 +79,6 @@ def stream_telemetry_background():
     except Exception as e:
         print(f"Error reading telemetry data: {str(e)}")
         socketio.emit("telemetry_data", {"error": str(e)})
-
-# @socketio.on("request_telemetry")
-# def stream_telemetry():
-#     print("Streaming telemetry data")
-#     if serialComm.ser or serialComm.ser.is_open:
-#         try:
-#             for data in serialComm.read_serial_data():
-#                 print(f"Telemetry Data: {data}")
-#                 socketio.emit("telemetry_data", data)
-#         except Exception as e:
-#             print(f"Error reading telemetry data: {str(e)}")
-#             emit("telemetry_data", {"error": str(e)})
-#     else:
-#         print("Serial port not available")
-#         emit("telemetry_data", {"error": "Serial port not available"})
-
-
 
 if __name__ == "__main__":
     host="127.0.0.1" # "192.168.1.209"  
