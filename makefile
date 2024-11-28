@@ -8,6 +8,10 @@ run_groundstation:
 run_groundstation_ui:
 	cd ${FRONTEND_DIR} && npm run dev
 
+run:
+	osascript -e 'tell application "Terminal" to do script "cd $(PWD) && make run_groundstation"' & \
+	osascript -e 'tell application "Terminal" to do script "cd $(PWD) && make run_groundstation_ui"'
+	
 clean:
 	rm -rf $(VENV)
 	rm -rf __pycache__

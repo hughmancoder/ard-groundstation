@@ -1,4 +1,5 @@
 #include "LoRaRadio.h"
+#include "Telemetry.hpp"
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -67,15 +68,13 @@ void loop()
         {
             displayData((char *)data, 0, samples);
         }
+        
+        // printTelemetryAsCSV(data);
 
-        // Send serial data
-        Serial.println("time,bmpTemp,imuTemp,pressure,altitude,accX,accY,accZ,angVelX,angVelY,angVelZ");
-        Serial.println("time,bmpTemp,imuTemp,pressure,altitude,accX,accY,accZ,angVelX,angVelY,angVelZ");
+        Send serial data
         Serial.print(samples);  
         Serial.print(",");
         Serial.println((char *)data);  
-
-        
 
         samples++;             
     }

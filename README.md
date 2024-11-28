@@ -1,10 +1,6 @@
 # Adept Rocketry Ground Station
 
-## About
-
-### Tools
-
-
+<!-- ![ARD](groundstation_ui/public/logos/ARD_yellow_logo.png) -->
 <img alt="Python" src="https://img.shields.io/badge/-Python-ffbc03?&logo=Python&style=for-the-badge" />
 <img alt="Flask" src="https://img.shields.io/badge/-Flask-000000?&logo=Flask&style=for-the-badge" />
 <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?&logo=TypeScript&
@@ -12,9 +8,6 @@ style=for-the-badge" />
 <img alt="React" src="https://img.shields.io/badge/-React-61DAFB?&logo=React&style=for-the-badge" />
 <img alt="Arduino" src="https://img.shields.io/badge/-Arduino-00979D?&logo=Arduino&style=for-the-badge" />
 <img alt="C" src="https://img.shields.io/badge/-C-A8B9CC?&logo=C&style=for-the-badge" />
-
-
-
 
 
 ## Installation
@@ -44,7 +37,8 @@ cd ..
 
 ## Planned Features
 - [ ] Teensy System Integration
-- [ ] Export fligth data to CSV
+- [ ] Graphs page
+- [ ] Export flight data to CSV
 - [ ] Database to save past flights
 - [ ] Simulation Mode
 - [ ] Concurrent guis through a distributed system

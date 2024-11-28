@@ -19,7 +19,7 @@ class SerialComm:
         self.simulation_mode = simulation_mode
         self.ser = None
         self.stop_threads = False
-        self.PACKET_FORMAT = '<Iffffffffff'  
+        self.PACKET_FORMAT = '<Iffffffffff'  # TelemetryPacket object
         self.PACKET_SIZE = struct.calcsize(self.PACKET_FORMAT)
         self.serial_data_buffer = []
         self.CSV_FILE_NAME = "save.csv"
@@ -51,15 +51,21 @@ class SerialComm:
             if self.ser and self.ser.is_open:
                 try:
                     # Read a line from the serial port
-                    raw_data = self.ser.readline().decode('utf-8').strip()
+                    raw_data = self.ser.readline().decode('utf-8').strip()  # Read and decode CSV line
                     print("Raw data:", raw_data)
-                    values = raw_data.split(",")
-                    if len(values) == len(DATA_COLUMNS):
-                        parsed_data = {DATA_COLUMNS[i]: float(values[i]) for i in range(len(DATA_COLUMNS))}
-                        
-                        # optionally write data to a CSV file
-                        # self.write_to_csv_file(parsed_data, DATA_COLUMNS)
 
+                    # Split the CSV line into individual values
+                    values = raw_data.split(",")
+
+                    # Validate the number of columns
+                    if len(values) == len(DATA_COLUMNS):
+                        # Convert the `time` column to int and others to float
+                        parsed_data = {DATA_COLUMNS[0]: int(values[0])}  # `time` as int
+                        parsed_data.update({
+                            DATA_COLUMNS[i]: float(values[i]) for i in range(1, len(DATA_COLUMNS))
+                        })
+
+                        # Optionally write to a CSV file or process the data
                         yield parsed_data
 
                     else:
@@ -82,7 +88,7 @@ class SerialComm:
                     raw_data = self.ser.read(self.PACKET_SIZE)
                     if len(raw_data) == self.PACKET_SIZE:
                         data = struct.unpack(self.PACKET_FORMAT, raw_data)
-                        print("Received data:", data)
+                        print("Raw serial data:", data)
                         yield {
                             DATA_COLUMNS[i]: data[i] for i in range(len(DATA_COLUMNS))
                         }
