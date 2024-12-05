@@ -1,5 +1,5 @@
 #include "LoRaRadio.h"
-#include "Telemetry.hpp"
+#include "../Telemetry.hpp"
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -33,6 +33,7 @@ void setup()
 
     // Note: The LoRa radio is initialized with a frequency of 916.0 MHz and a transmitter power of 23 dBm (maximum allowable limit)
     radio.begin(RF95_FREQ, 23, false); 
+    lcd.clear();
 
     lcd.setCursor(0, 0);
     Serial.println("LoRa Radio Ready");
@@ -71,7 +72,7 @@ void loop()
         
         // printTelemetryAsCSV(data);
 
-        Send serial data
+        // Send serial data
         Serial.print(samples);  
         Serial.print(",");
         Serial.println((char *)data);  

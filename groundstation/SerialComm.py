@@ -52,7 +52,7 @@ class SerialComm:
                 try:
                     # Read a line from the serial port
                     raw_data = self.ser.readline().decode('utf-8').strip()  # Read and decode CSV line
-                    print("Raw data:", raw_data)
+                    print("Raw data:", self.ser.readline())
 
                     # Split the CSV line into individual values
                     values = raw_data.split(",")
@@ -69,7 +69,7 @@ class SerialComm:
                         yield parsed_data
 
                     else:
-                        print("Malformed line, skipping:", raw_data)
+                        print("INFO: malformed data", values)
 
                 except serial.SerialException as e:
                     print(f"Error reading from serial port: {e}")
@@ -81,6 +81,7 @@ class SerialComm:
             else:
                 time.sleep(0.1)
 
+
     def read_serial_data_from_binary_stream(self):
         while not self.stop_threads:
             if self.ser and self.ser.is_open:
@@ -88,7 +89,7 @@ class SerialComm:
                     raw_data = self.ser.read(self.PACKET_SIZE)
                     if len(raw_data) == self.PACKET_SIZE:
                         data = struct.unpack(self.PACKET_FORMAT, raw_data)
-                        print("Raw serial data:", data)
+                        print("Binary stream data:", data)
                         yield {
                             DATA_COLUMNS[i]: data[i] for i in range(len(DATA_COLUMNS))
                         }
@@ -101,6 +102,7 @@ class SerialComm:
             else:
                 time.sleep(0.1)
 
+
     def set_baud_rate(self, baudrate):
         self.baudrate = baudrate
 
@@ -110,6 +112,7 @@ class SerialComm:
 
     @staticmethod
     def list_serial_ports():
+        print("Listing available serial ports for platform ", sys.platform)
         """List available serial ports."""
         if sys.platform.startswith('win'):
             ports = ['COM%s' % (i + 1) for i in range(256)]

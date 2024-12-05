@@ -71,8 +71,7 @@ def stream_telemetry():
 def stream_telemetry_background():
     print("Starting telemetry stream in background")
     try:
-        for data in serialComm.read_serial_data_from_csv():
-            # print(f"Telemetry Data: {data}")
+        for data in serialComm.read_serial_data_from_binary_stream(): # serialComm.read_serial_data_from_csv()
             # Use broadcast=True if you want to send to all connected clients
             socketio.emit("telemetry_data", data)
             socketio.sleep(0.1)  

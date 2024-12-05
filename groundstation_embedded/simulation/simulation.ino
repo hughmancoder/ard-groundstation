@@ -1,6 +1,6 @@
 #include <LiquidCrystal_I2C.h>
 #include <Wire.h>
-#include "Telemetry.hpp"
+#include "../Telemetry.hpp"
 
 // Initialize the I2C LCD with the address 0x27 and 16x2 display size
 LiquidCrystal_I2C lcd(0x27, 16, 2);
@@ -32,7 +32,9 @@ void loop() {
   lcd.print("Sample : ");
   lcd.print(sampleData[index].time);
 
-  printTelemetryAsCSV(sampleData[index]);
+
+  // printTelemetryAsCSV(sampleData[index]); // TODO: fix, outputs ''
+  writeSerialAsBinaryStream(sampleData[index]);
   
   index++;
   if (index >= sizeof(sampleData) / sizeof(sampleData[0])) {
