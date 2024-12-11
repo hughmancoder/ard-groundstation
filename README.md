@@ -41,6 +41,7 @@ cd ..
 ## Planned Features
 
 - [ ] Teensy System Integration
+- [ ] Add table
 - [ ] Graphs page
 - [ ] Export flight data to CSV
 - [ ] More robust disconnect mechanism (disconnect regardless of connection failure)

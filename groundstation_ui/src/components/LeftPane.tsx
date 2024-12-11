@@ -17,7 +17,7 @@ const labelColors: Record<Status, string> = {
 
 
 const getIconColor = (status: Status): string => iconColors[status];
-const getLabelColor = (status: Status): string => labelColors[status];
+const getLabelColor = (status: Status): string => labelColors[status]; 
 
 
 interface Props {
@@ -39,7 +39,7 @@ const LeftPane = ({ data, status } : Props) => {
   ];
 
   return (
-    <div className="w-64 space-y-11">
+    <div className="w-full max-w-xs space-y-8">
       <div className="space-y-11">
         {metrics.map((metric, index) => (
           <Metric  metrics={metric}></Metric>
