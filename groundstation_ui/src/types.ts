@@ -1,8 +1,7 @@
 
 
 export const BASE_URL = "http://127.0.0.1:5000" // "http://192.168.1.209:5000"
-const MAX_DATA_POINTS = 1000; 
-
+export const MAX_DATA_POINTS = 100;
 export type Status = "connected" | "disconnected" | "awaiting";
 
 export type Metric = {
@@ -52,4 +51,11 @@ export const DATA_COLUMNS: { key: keyof TelemetryData; label: string }[] = [
   { key: "angVelX", label: "Ang Vel X" },
   { key: "angVelY", label: "Ang Vel Y" },
   { key: "angVelZ", label: "Ang Vel Z" },
+];
+
+export const PLOT_METADATA: { key: keyof TelemetryData; label: string, color: string }[] = [
+  { key: "bmpTemp", label: "BMP Temp", color: "#ff6730" },    
+  { key: "imuTemp", label: "IMU Temp", color: "#ff9b30" },    
+  { key: "pressure", label: "Pressure", color: "#ffba30" },    
+  { key: "altitude", label: "Altitude", color: "#FFD630" }     
 ];

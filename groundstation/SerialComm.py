@@ -7,9 +7,8 @@ import csv
 
 DATA_COLUMNS = [
     'time', 'bmpTemp', 'imuTemp', 'pressure', 'altitude',
-    'accX', 'accY', 'accZ', 'angVelX', 'angVelY', 'angVelZ',
+    'accX', 'accY', 'accZ', 'angVelX', 'angVelY', 'angVelZ'
 ]
-
 
 class SerialComm:
     def __init__(self, port_name=None, baudrate=9600, timeout=1, simulation_mode=False):
@@ -46,42 +45,6 @@ class SerialComm:
             self.ser.close()
             print(f"Closed serial port: {self.port_name}")
 
-    def read_serial_data_from_csv(self):
-        while not self.stop_threads:
-            if self.ser and self.ser.is_open:
-                try:
-                    # Read a line from the serial port
-                    raw_data = self.ser.readline().decode('utf-8').strip()  # Read and decode CSV line
-                    print("Raw data:", self.ser.readline())
-
-                    # Split the CSV line into individual values
-                    values = raw_data.split(",")
-
-                    # Validate the number of columns
-                    if len(values) == len(DATA_COLUMNS):
-                        # Convert the `time` column to int and others to float
-                        parsed_data = {DATA_COLUMNS[0]: int(values[0])}  # `time` as int
-                        parsed_data.update({
-                            DATA_COLUMNS[i]: float(values[i]) for i in range(1, len(DATA_COLUMNS))
-                        })
-
-                        # Optionally write to a CSV file or process the data
-                        yield parsed_data
-
-                    else:
-                        print("INFO: malformed data", values)
-
-                except serial.SerialException as e:
-                    print(f"Error reading from serial port: {e}")
-                    self.stop_threads = True
-                    break
-                except Exception as e:
-                    print(f"Parsing error: {e}")
-                    continue
-            else:
-                time.sleep(0.1)
-
-
     def read_serial_data_from_binary_stream(self):
         while not self.stop_threads:
             if self.ser and self.ser.is_open:
@@ -90,17 +53,29 @@ class SerialComm:
                     if len(raw_data) == self.PACKET_SIZE:
                         data = struct.unpack(self.PACKET_FORMAT, raw_data)
                         print("Binary stream data:", data)
-                        yield {
-                            DATA_COLUMNS[i]: data[i] for i in range(len(DATA_COLUMNS))
-                        }
+                        yield dict((DATA_COLUMNS[i], data[i]) for i in range(len(DATA_COLUMNS)))
                     else:
                         time.sleep(0.01)
                 except serial.SerialException as e:
-                    print(f"Error reading from serial port: {e}")
+                    print(f"Error reading from serial port into binary stream: {e}")
                     self.stop_threads = True
                     break
-            else:
-                time.sleep(0.1)
+
+    def read_serial_data_from_csv(self):
+        while not self.stop_threads:
+            if self.ser and self.ser.is_open:
+                try:
+                    line = self.ser.readline().decode('utf-8').strip()
+                    entries = line.split(',') 
+                    if len(entries) >= len(DATA_COLUMNS):
+                        print(dict((DATA_COLUMNS[i], entries[i]) for i in range(len(DATA_COLUMNS))))
+                        yield dict((DATA_COLUMNS[i], float(entries[i])) for i in range(len(DATA_COLUMNS)))
+                    else:
+                        time.sleep(0.01)
+                except serial.SerialException as e:
+                    print(f"Error reading from serial port into binary stream: {e}")
+                    self.stop_threads = True
+                    break
 
 
     def set_baud_rate(self, baudrate):
@@ -110,8 +85,7 @@ class SerialComm:
         """Set the serial port."""
         self.port_name = port_name
 
-    @staticmethod
-    def list_serial_ports():
+    def list_serial_ports(self):
         print("Listing available serial ports for platform ", sys.platform)
         """List available serial ports."""
         if sys.platform.startswith('win'):
@@ -120,6 +94,7 @@ class SerialComm:
             ports = glob.glob('/dev/tty[A-Za-z]*')
         elif sys.platform.startswith('darwin'):
             ports = glob.glob('/dev/tty.*')
+            # ports = glob.glob('/dev/tty.*') + glob.glob('/dev/cu.*') ## tty: incoming data, cu: outgoing data
         else:
             raise EnvironmentError('Unsupported platform')
 

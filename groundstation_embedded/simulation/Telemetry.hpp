@@ -235,8 +235,7 @@ TelemetryPacket sampleData[] = {{3174262, 23.99, 29.63, 99494.90, 153.49, -0.61,
                           {3201138, 24.00, 29.63, 83539.05, 1598.77, -14.34,
                            -28.67, 162.39, 0.20, 0.73, 2.36}};
 
-inline void writeSerialAsBinaryStream(const TelemetryPacket &packet) {
-    // Send the telemetry data as a binary stream
+inline void writeTelemeryAsBinaryStream(const TelemetryPacket &packet) {
     Serial.write((uint8_t *)&packet, sizeof(TelemetryPacket));
 }
 
@@ -260,6 +259,7 @@ inline void printTelemetryAsCSV(const TelemetryPacket &packet) {
     Serial.print(packet.angVelX, 6);
     Serial.print(',');
     Serial.print(packet.angVelY, 6);
+    Serial.print(',');
     Serial.println(packet.angVelZ, 6);
 }
 

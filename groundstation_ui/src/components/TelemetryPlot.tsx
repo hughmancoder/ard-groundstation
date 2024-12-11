@@ -1,3 +1,4 @@
+import { TelemetryData } from "@/types";
 import React from "react";
 import {
   LineChart,
@@ -10,27 +11,33 @@ import {
 
 export type ChartData = Record<string, number>;
 
-type TelemetryPlotProps = {
-  data: ChartData[];
+interface TelemetryPlotProps {
+  data: TelemetryData[];
   title: string;
-};
+  dataKey: keyof TelemetryData;
+  color?: string;
+}
 
 export const TelemetryPlot: React.FC<TelemetryPlotProps> = ({
   data,
   title,
+  dataKey,
+  color = "yellow"
 }) => {
   return (
     <div className="flex flex-col items-center">
       <h2 className="text-center text-gray-300">{title}</h2>
 
-      <ResponsiveContainer width={250} height={120}>
+      <ResponsiveContainer width={400} height={150}>
         <LineChart data={data}>
           <XAxis
             dataKey="time"
-            tick={{ fill: "white" }} // Makes tick text white
+            tick={{ fill: "white" }}
+            domain={['auto', 'auto']}
           />
           <YAxis
-            tick={{ fill: "white" }} // Makes tick text white
+            tick={{ fill: "white" }}
+            domain={['auto', 'auto']}
           />
           <Tooltip
             contentStyle={{ backgroundColor: "black", borderColor: "white" }}
@@ -38,8 +45,8 @@ export const TelemetryPlot: React.FC<TelemetryPlotProps> = ({
           />
           <Line
             type="monotone"
-            dataKey="bmpTemp"
-            stroke="yellow"
+            dataKey={dataKey}
+            stroke={color}
             strokeWidth={2}
             dot={false}
           />
@@ -48,3 +55,4 @@ export const TelemetryPlot: React.FC<TelemetryPlotProps> = ({
     </div>
   );
 };
+

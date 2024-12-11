@@ -40,7 +40,6 @@ const LeftPane = ({ data, status } : Props) => {
 
   return (
     <div className="w-64 space-y-11">
-      
       <div className="space-y-11">
         {metrics.map((metric, index) => (
           <Metric  metrics={metric}></Metric>

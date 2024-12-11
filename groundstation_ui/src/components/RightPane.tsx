@@ -23,7 +23,7 @@ const RightPane = ({data} : Props) => {
       {metrics.map((item, index) => (
         <div
           key={index}
-          className={`flex justify-between items-end ${index === 4 ? "pt-14" : ""}`}
+          className={`flex justify-between items-end ${index === 3 ? "pt-14" : ""}`}
         >
           <div className="flex flex-col space-y-2">
             <span className="text-md text-gray-300">{item.title}</span>
