@@ -19,7 +19,7 @@ const RightPane = ({data} : Props) => {
     { title: "Angular Velocity Z", value: data.angVelZ, unit: "°/s", max: 360 },
   ];
   return (
-    <div className="w-64 space-y-8">
+    <div className="w-full max-w-xs space-y-8">
       {metrics.map((item, index) => (
         <div
           key={index}
