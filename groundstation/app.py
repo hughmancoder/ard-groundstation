@@ -1,20 +1,22 @@
 import socket
 import os
+import serial
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 from SerialComm import SerialComm  
 
+
 app = Flask(__name__)
-CORS(app)  
-socketio = SocketIO(app, cors_allowed_origins="*")  
 serialComm = SerialComm()
+CORS(app, origins=["http://127.0.0.1:5173", "*"], supports_credentials=True)
+socketio = SocketIO(app, cors_allowed_origins="*")  
 
 @app.route("/ports", methods=["GET"])
-def list_serial_ports():
+def get_serial_ports():
     """List available serial ports."""
-    ports = SerialComm.list_serial_ports()
-    print(f"Available ports: {ports}")
+    ports = serialComm.list_serial_ports()
+    print(f"Serial port {port} has been set")
     return jsonify({"success": True, "ports": ports})
 
 
@@ -71,16 +73,28 @@ def stream_telemetry():
 def stream_telemetry_background():
     print("Starting telemetry stream in background")
     try:
-        for data in serialComm.read_serial_data_from_binary_stream(): # serialComm.read_serial_data_from_csv()
-            # Use broadcast=True if you want to send to all connected clients
-            socketio.emit("telemetry_data", data)
+        for data in serialComm.read_serial_data_from_csv(): 
+            print('data', data)
+            if data:  # Ensure that data is not None or empty
+                socketio.emit("telemetry_data", data)
+            else:
+                print("No telemetry data received")
             socketio.sleep(0.1)  
     except Exception as e:
         print(f"Error reading telemetry data: {str(e)}")
         socketio.emit("telemetry_data", {"error": str(e)})
+
+""" 
+@app.route("/server_running", methods=["GET"])
+def health_check():
+    # Check if the server is running
+    return jsonify({"success": True, "message": "Server is running"}), 200 
+"""
+
 
 if __name__ == "__main__":
     host="127.0.0.1" # "192.168.1.209"  
     port = 5000
     print(f"Starting server on host {host} and port {port}")
     socketio.run(app, debug=True, host=host, port=port)
+

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import LeftPane from "./components/LeftPane";
 import RightPane from "./components/RightPane";
-import { defaultTelemetryData, Status, TelemetryData } from "./types";
+import { defaultTelemetryData, MAX_DATA_POINTS, PLOT_METADATA, Status, TelemetryData } from "./types";
 import { Metric } from "./components/Metric";
 import {
   Select,
@@ -15,9 +15,9 @@ import {
 import { Button } from "./components/ui/button";
 import { fetchEndpoint } from "./fetch";
 import { socket } from "./socket";
-
+import Details from "./components/details";
 function App() {
-  type View = "telemetry" | "settings";
+  type View = "telemetry" | "settings" | "details";
   const [view, setView] = useState<View>("telemetry");
   const [ports, setPorts] = useState<string[]>([]);
   const [selectedPort, setSelectedPort] = useState<string | null>(null);
@@ -26,14 +26,16 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [telemetryData, setTelemetryData] = useState<TelemetryData[]>([]);
 
-  const latestTelemetryData : TelemetryData = telemetryData[telemetryData.length - 1] || defaultTelemetryData;
+  const latestTelemetryData: TelemetryData =
+    telemetryData[telemetryData.length - 1] || defaultTelemetryData;
   const rotationAngle = latestTelemetryData?.angVelZ || 0;
   const time = latestTelemetryData?.time || 0;
   const altitude = latestTelemetryData?.altitude || 0;
 
+
   useEffect(() => {
-    const MAX_DATA_POINTS = 1000; 
-  
+    
+
     const handleTelemetryData = (data: any) => {
       if (data.error) {
         console.error("Telemetry Error:", data.error);
@@ -48,10 +50,10 @@ function App() {
         });
       }
     };
-  
+
     // WebSocket event listener
     socket.on("telemetry_data", handleTelemetryData);
-  
+
     return () => {
       // Cleanup listener on unmount
       socket.off("telemetry_data", handleTelemetryData);
@@ -135,7 +137,9 @@ function App() {
 
         return true;
       } else {
-        console.error("Failed to disconnect:", data.error);
+        console.error("Failed to stop_port:", data.error);
+        setSelectedPortStatus("disconnected");
+        setIsConnected(false);
         return false;
       }
     } catch (error) {
@@ -150,7 +154,6 @@ function App() {
       if (isConnected) {
         const success = await closePort();
         if (success) {
-          
           setTelemetryData([]);
         }
       } else {
@@ -171,18 +174,48 @@ function App() {
       <div
         className="w-full h-screen px-12 pt-10 font-sans bg-cover border-blue-900 bg-blue-900"
         style={{
-          backgroundImage: view === "telemetry" ? `url('/img/background.png')` : "none",
+          backgroundImage:
+            view === "telemetry" ? `url('/img/background.png')` : "none",
         }}
       >
         <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/30 to-transparent" />
 
         <div>
           <div className="flex items-start mt-4">
-            <LeftPane data={latestTelemetryData} status={portStatus}/>
-            <div className="flex w-full flex-col px-16 pt-6 relative">
+            <div>
+              <LeftPane data={latestTelemetryData} status={portStatus} />
+              <div className="flex flex-col pt-11 space-y-11">
+                <div
+                  onClick={() => setView("telemetry")}
+                  className={`text-md font-bold rounded cursor-pointer hover:text-blue-100 ${
+                    view === "telemetry" ? " text-white" : "text-gray-600"
+                  }`}
+                >
+                  Telemetry
+                </div>
+                <div
+                  onClick={() => setView("settings")}
+                  className={`text-md font-bold rounded cursor-pointer hover:text-blue-100 ${
+                    view === "settings" ? " text-white" : "text-gray-600"
+                  }`}
+                >
+                  Settings
+                </div>
+                <div
+                  onClick={() => setView("details")}
+                  className={`text-md font-bold rounded cursor-pointer hover:text-blue-100 ${
+                    view === "details" ? " text-white" : "text-gray-600"
+                  }`}
+                >
+                  Details
+                </div>
+              </div>
+            </div>
+
+            <div className="flex w-full flex-col relative">
               {view === "telemetry" && (
                 <>
-                  <div className="grid grid-cols-3 pt-8">
+                  <div className="grid grid-cols-3 pt-8 px-16">
                     <div className="flex justify-center">
                       <Metric
                         large
@@ -193,7 +226,11 @@ function App() {
                     <div className="flex justify-center">
                       <Metric
                         large
-                        metrics={{ title: "Altitude", value: altitude.toFixed(2), unit: "m" }}
+                        metrics={{
+                          title: "Altitude",
+                          value: altitude.toFixed(2),
+                          unit: "m",
+                        }}
                       />
                     </div>
                   </div>
@@ -212,12 +249,6 @@ function App() {
               )}
               {view === "settings" && (
                 <div className="pt-8 px-16">
-                  {/* <div className="mb-2">
-                    <strong>Status:</strong> {portStatus}
-                  </div>
-                  <div className="mb-4">
-                    <strong>Selected Port:</strong> {selectedPort}
-                  </div> */}
                   <Select
                     value={selectedPort ?? ""}
                     onOpenChange={() => fetchPorts()}
@@ -256,40 +287,13 @@ function App() {
                       {isConnected ? "Disconnect" : "Connect"}
                     </Button>
                   </div>
-                  <div className="mt-4">
-                    <strong>Telemetry Data</strong>
-                    <pre className="bg-gray-900 p-2 rounded max-h-80 overflow-y-auto">
-                      {JSON.stringify(telemetryData, null, 2)}
-                    </pre>
-                  </div>
                 </div>
+              )}
+              {view === "details" && (
+                <Details data={telemetryData}/>
               )}
             </div>
             <RightPane data={latestTelemetryData} />
-          </div>
-          <div className="fixed bottom-20 left-10 flex justify-between pt-4">
-            <div className="flex items-center w-80 text-gray-800">
-              <button
-                onClick={() => setView("telemetry")}
-                className={`relative px-8 text-sm font-bold uppercase rounded ${
-                  view === "telemetry"
-                    ? "bg-white text-gray z-10 py-6"
-                    : "bg-gray-900 bg-opacity-[0.1] text-white border py-4"
-                }`}
-              >
-                Telemetry
-              </button>
-              <button
-                onClick={() => setView("settings")}
-                className={`relative -translate-x-1 px-8 border rounded text-sm font-bold uppercase ${
-                  view === "settings"
-                    ? "bg-white text-gray z-10 py-6"
-                    : "bg-gray-900 bg-opacity-[0.1] text-white py-4"
-                }`}
-              >
-                Settings
-              </button>
-            </div>
           </div>
         </div>
       </div>
