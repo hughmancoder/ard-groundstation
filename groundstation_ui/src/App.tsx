@@ -1,13 +1,7 @@
 import { useEffect, useState } from "react";
 import LeftPane from "./components/LeftPane";
 import RightPane from "./components/RightPane";
-import {
-  defaultTelemetryData,
-  MAX_DATA_POINTS,
-  PLOT_METADATA,
-  Status,
-  TelemetryData,
-} from "./types";
+import { defaultTelemetryData, MAX_DATA_POINTS, PLOT_METADATA, Status, TelemetryData } from "./types";
 import { Metric } from "./components/Metric";
 import {
   Select,
@@ -21,9 +15,8 @@ import {
 import { Button } from "./components/ui/button";
 import { fetchEndpoint } from "./fetch";
 import { socket } from "./socket";
-import Details from "./components/details";
-import NavigationMenu from "./components/NavigationMenu";
-import RightMetrics from "./archive/RightMetrics";
+import Details from "./components/Details";
+
 function App() {
   type View = "telemetry" | "settings" | "details";
   const [view, setView] = useState<View>("telemetry");
@@ -40,7 +33,10 @@ function App() {
   const time = latestTelemetryData?.time || 0;
   const altitude = latestTelemetryData?.altitude || 0;
 
+
   useEffect(() => {
+    
+
     const handleTelemetryData = (data: any) => {
       if (data.error) {
         console.error("Telemetry Error:", data.error);
@@ -175,109 +171,134 @@ function App() {
   };
 
   return (
-    <div
-      className="w-full h-screen px-4 sm:px-6 md:px-8 lg:px-12 pt-4 sm:pt-6 md:pt-8 lg:pt-10 font-sans bg-cover border-blue-900 bg-blue-900"
-      style={{
-        backgroundImage:
-          view === "telemetry" ? `url('/img/background.png')` : "none",
-      }}
-    >
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/30 to-transparent" />
-      <div className="flex flex-col md:flex-row items-start mt-4">
-        <div className="w-full lg:w-auto">
-          <div className="hidden md:block">
-          <LeftPane data={latestTelemetryData} status={portStatus} />
-          </div>
-            <NavigationMenu view={view} setView={setView} />
-        </div>
+    <>
+      <div
+        className="w-full h-screen px-12 pt-10 font-sans bg-cover border-blue-900 bg-blue-900"
+        style={{
+          backgroundImage:
+            view === "telemetry" ? `url('/img/background.png')` : "none",
+        }}
+      >
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/30 to-transparent" />
 
-        <div className="flex w-full flex-col relative">
-          {view === "telemetry" && (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-8 px-4 sm:px-8 md:px-16">
-                <div className="flex justify-center">
-                  <Metric
-                    large
-                    metrics={{ title: "Time", value: time, unit: "s" }}
-                  />
-                </div>
-                <div className="flex justify-center">
-                  <Metric
-                    large
-                    metrics={{
-                      title: "Altitude",
-                      value: altitude.toFixed(2),
-                      unit: "m",
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Rocket Image */}
-              <div className="absolute flex flex-col justify-center left-1/2 transform -translate-x-1/2 top-4 hidden md:block">
-                <img
-                  className="w-24 md:w-36 h-auto"
-                  src="/img/rocket.png"
-                  alt=""
-                  style={{
-                    transform: `rotate(${rotationAngle}deg)`,
-                  }}
-                />
-              </div>
-            </>
-          )}
-          {view === "settings" && (
-            <div className="pt-8 px-4 sm:px-8 md:px-16">
-                            <Select
-                value={selectedPort ?? ""}
-                onOpenChange={() => fetchPorts()}
-                onValueChange={(value) => setSelectedPort(value)}
-              >
-                <SelectTrigger className="w-full text-black">
-                  <SelectValue placeholder="Select a serial port" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Serial Ports</SelectLabel>
-                    {ports.map((port, index) => (
-                      <SelectItem key={index} value={port}>
-                        {port}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mt-4">
-                <Button
-                  onClick={fetchPorts}
-                  className="bg-gray-700 hover:bg-gray-800 w-full sm:w-auto"
-                >
-                  Refresh Ports
-                </Button>
-                <Button
-                  onClick={handlePortConnectToggle}
-                  disabled={isLoading || !selectedPort}
-                  className={`text-white w-full sm:w-auto ${
-                    selectedPort
-                      ? "bg-yellow-500 hover:bg-yellow-600"
-                      : "bg-gray-400 cursor-not-allowed"
+        <div>
+          <div className="flex items-start mt-4">
+            <div>
+              <LeftPane data={latestTelemetryData} status={portStatus} />
+              <div className="flex flex-col pt-11 space-y-11">
+                <div
+                  onClick={() => setView("telemetry")}
+                  className={`text-md font-bold rounded cursor-pointer hover:text-blue-100 ${
+                    view === "telemetry" ? " text-white" : "text-gray-600"
                   }`}
                 >
-                  {isConnected ? "Disconnect" : "Connect"}
-                </Button>
+                  Telemetry
+                </div>
+                <div
+                  onClick={() => setView("settings")}
+                  className={`text-md font-bold rounded cursor-pointer hover:text-blue-100 ${
+                    view === "settings" ? " text-white" : "text-gray-600"
+                  }`}
+                >
+                  Settings
+                </div>
+                <div
+                  onClick={() => setView("details")}
+                  className={`text-md font-bold rounded cursor-pointer hover:text-blue-100 ${
+                    view === "details" ? " text-white" : "text-gray-600"
+                  }`}
+                >
+                  Details
+                </div>
               </div>
             </div>
-          )}
-          {view === "details" && (
-            <Details data={telemetryData} />
-          )}
-        </div>
 
-        <div className="hidden md:block">
-          <RightPane data={latestTelemetryData} />
+            <div className="flex w-full flex-col relative">
+              {view === "telemetry" && (
+                <>
+                  <div className="grid grid-cols-3 pt-8 px-16">
+                    <div className="flex justify-center">
+                      <Metric
+                        large
+                        metrics={{ title: "Time", value: time, unit: "s" }}
+                      />
+                    </div>
+                    <div></div>
+                    <div className="flex justify-center">
+                      <Metric
+                        large
+                        metrics={{
+                          title: "Altitude",
+                          value: altitude.toFixed(2),
+                          unit: "m",
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="absolute flex flex-col justify-center -translate-x-1/2 left-1/2 top-4">
+                    <img
+                      className="w-[145px] h-auto"
+                      src="/img/rocket.png"
+                      alt=""
+                      style={{
+                        transform: `rotate(${rotationAngle}deg)`,
+                      }}
+                    />
+                  </div>
+                </>
+              )}
+              {view === "settings" && (
+                <div className="pt-8 px-16">
+                  <Select
+                    value={selectedPort ?? ""}
+                    onOpenChange={() => fetchPorts()}
+                    onValueChange={(value) => setSelectedPort(value)}
+                  >
+                    <SelectTrigger className="w-full text-black">
+                      <SelectValue placeholder="Select a serial port" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Serial Ports</SelectLabel>
+                        {ports.map((port, index) => (
+                          <SelectItem key={index} value={port}>
+                            {port}
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <div className="flex space-x-4 mt-4">
+                    <Button
+                      onClick={fetchPorts}
+                      className="bg-gray-700 hover:bg-gray-800"
+                    >
+                      Refresh Ports
+                    </Button>
+                    <Button
+                      onClick={handlePortConnectToggle}
+                      disabled={isLoading || !selectedPort}
+                      className={`text-white ${
+                        selectedPort
+                          ? "bg-yellow-500 hover:bg-yellow-600"
+                          : "bg-gray-400 cursor-not-allowed"
+                      }`}
+                    >
+                      {isConnected ? "Disconnect" : "Connect"}
+                    </Button>
+                  </div>
+                </div>
+              )}
+              {view === "details" && (
+                <Details data={telemetryData}/>
+              )}
+            </div>
+            <RightPane data={latestTelemetryData} />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
