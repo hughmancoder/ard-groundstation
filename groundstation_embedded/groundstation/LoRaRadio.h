@@ -4,7 +4,7 @@
 #include <SPI.h>
 #include <RH_RF95.h>
 
-#define LED 13
+// #define LED 13
 
 class LoRaRadio {
   private:
@@ -23,7 +23,7 @@ class LoRaRadio {
       digitalWrite(RFM95_RST, HIGH);
       delay(100);
       SPI.begin();
-      SPI.setSCK(27);  // Set SCK pin to pin 2
+      SPI.setSCK(13);  // Set SCK pin to pin 2
       delay(100);
       if (serial) {
         Serial.begin(Baud_Rate);
@@ -53,6 +53,7 @@ class LoRaRadio {
 
     bool receiveData(uint8_t* data, uint8_t* len) {
       if (rf95.available()) {
+        Serial.println("rf95");
         *len = sizeof(buf);
         if (rf95.recv(buf, len)) {
           memcpy(data, buf, *len); // Ensure `len` is not larger than `sizeof(buf)`
