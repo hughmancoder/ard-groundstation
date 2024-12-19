@@ -9,6 +9,9 @@ export const MAX_DATA_POINTS = 100; // Number of points to hold temporarily in m
 export type Status = "connected" | "disconnected" | "awaiting";
 export type View = "telemetry" | "settings" | "details";
 
+export type View = "telemetry" | "settings" | "details";
+export const VIEWS: View[] = ["telemetry", "settings", "details"];
+
 export type Metric = {
   title: string;
   value: number | string;
