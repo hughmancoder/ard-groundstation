@@ -4,9 +4,9 @@ import RightPane from "./components/RightPane";
 import {
   defaultTelemetryData,
   MAX_DATA_POINTS,
-  PLOT_METADATA,
   Status,
   TelemetryData,
+  View,
 } from "./types";
 import { Metric } from "./components/Metric";
 import {
@@ -21,11 +21,9 @@ import {
 import { Button } from "./components/ui/button";
 import { fetchEndpoint } from "./fetch";
 import { socket } from "./socket";
-import Details from "./components/details";
 import NavigationMenu from "./components/NavigationMenu";
-import RightMetrics from "./archive/RightMetrics";
+import Details from "./components/Details";
 function App() {
-  type View = "telemetry" | "settings" | "details";
   const [view, setView] = useState<View>("telemetry");
   const [ports, setPorts] = useState<string[]>([]);
   const [selectedPort, setSelectedPort] = useState<string | null>(null);
@@ -189,7 +187,7 @@ function App() {
           <LeftPane data={latestTelemetryData} status={portStatus} />
           </div>
             <NavigationMenu view={view} setView={setView} />
-        </div>
+          </div>
 
         <div className="flex w-full flex-col relative">
           {view === "telemetry" && (

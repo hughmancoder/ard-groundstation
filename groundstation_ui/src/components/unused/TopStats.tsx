@@ -4,27 +4,23 @@ import Stat from "./Stat";
 const topStats = [
   {
     title: "Ppo2",
-    value: "2.69",
+    value: 2.69,
     unit: "psia",
-    gauge: 61,
   },
   {
     title: "Cabin temp",
-    value: "2.41",
+    value: 2.41,
     unit: "°C",
-    gauge: 20,
   },
   {
     title: "Cabin pressure",
-    value: "14.00",
+    value: 14.00,
     unit: "psia",
-    gauge: 61,
   },
   {
     title: "Co2",
-    value: "0.07",
+    value: 0.07,
     unit: "mmHg",
-    gauge: 80,
   },
 ];
 

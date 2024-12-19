@@ -4,6 +4,9 @@ export const BASE_URL = "http://127.0.0.1:5000" // "http://192.168.1.209:5000"
 export const MAX_DATA_POINTS = 100;
 export type Status = "connected" | "disconnected" | "awaiting";
 
+export type View = "telemetry" | "settings" | "details";
+export const VIEWS: View[] = ["telemetry", "settings", "details"];
+
 export type Metric = {
   title: string;
   value: number | string;

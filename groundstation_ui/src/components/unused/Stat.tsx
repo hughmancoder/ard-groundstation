@@ -1,29 +1,43 @@
 import { useMemo } from "react";
 
-const GaugeComponent = ({ stats, size = "md" }) => {
-  const { title, value, unit, gauge } = stats;
+type Stat = {
+  title: string;
+  value: number;
+  threshold1?: number;
+  theshold2?: number;
+  unit: string;
+};
+
+
+interface Props {
+  stats: Stat;
+  size?: string;
+}
+
+const GaugeComponent = ({ stats, size = "md" } : Props) => {
+  const { title, value, unit } = stats;
 
   // Compute gauge color based on the gauge value
   const gaugeColor = useMemo(() => {
-    if (gauge >= 0 && gauge < 30) {
+    if (value >= 0 && value < 30) {
       return "text-red";
     }
-    if (gauge >= 30 && gauge < 80) {
+    if (value >= 30 && value < 80) {
       return "text-yellow";
     }
     return "text-blue";
-  }, [gauge]);
+  }, [value]);
 
   
   const strokeDashArray = useMemo(() => {
-    if (gauge >= 0 && gauge < 30) {
-      return `${gauge} 360`;
+    if (value >= 0 && value < 30) {
+      return `${value} 360`;
     }
-    if (gauge >= 30 && gauge < 80) {
-      return `25 1 ${gauge - 26} 360`;
+    if (value >= 30 && value < 80) {
+      return `25 1 ${value - 26} 360`;
     }
-    return `25 1 40 1 ${gauge - 67} 360`;
-  }, [gauge]);
+    return `25 1 40 1 ${value - 67} 360`;
+  }, [value]);
 
   return (
     <div

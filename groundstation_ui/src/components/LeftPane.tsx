@@ -1,4 +1,3 @@
-import React from "react";
 import { Status, Metric as TMetric, TelemetryData } from "../types";
 import { Metric } from "./Metric";
 
@@ -41,7 +40,7 @@ const LeftPane = ({ data, status } : Props) => {
   return (
     <div className="w-full max-w-xs space-y-8">
       <div className="space-y-11">
-        {metrics.map((metric, index) => (
+        {metrics.map((metric,) => (
           <Metric  metrics={metric}></Metric>
         ))}
       </div>

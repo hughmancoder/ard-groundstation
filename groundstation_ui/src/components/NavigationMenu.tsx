@@ -1,14 +1,15 @@
+import { View, VIEWS } from '@/types';
 import React from 'react';
 
 interface NavigationMenuProps {
     view: string;
-    setView: (view: string) => void;
+    setView: React.Dispatch<React.SetStateAction<View>>;
 }
 
 const NavigationMenu: React.FC<NavigationMenuProps> = ({ view, setView }) => {
     return (
         <div className="flex flex-row lg:flex-col pt-6 space-x-4 lg:space-x-0 lg:space-y-6">
-            {['telemetry', 'settings', 'details'].map((item) => (
+            {VIEWS.map((item) => (
                 <div
                     key={item}
                     onClick={() => setView(item)}
