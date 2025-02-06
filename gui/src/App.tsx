@@ -1,17 +1,19 @@
 import { useState } from "react";
 import LeftPane from "./components/LeftPane";
 import RightPane from "./components/RightPane";
-import { DEFAULT_TELEMETRY_DATA, PAGE, STATUS, TelemetryData } from "./types";
+import { DEFAULT_TELEMETRY_DATA, PAGE, STATUS, Telemetry } from "./types";
 import TelemetryPage from "./pages/TelemetryPage";
 import SettingsPage from "./pages/SettingsPage";
 import GraphPage from "./pages/GraphPage";
 
 function App() {
+  // Shared data
   const [page, setPage] = useState<PAGE>(PAGE.TELEMETRY);
-  const [portStatus, setSelectedPortStatus] = useState<STATUS>("disconnected");
-  const [telemetryData, setTelemetryData] = useState<TelemetryData[]>([
+  const [portStatus, setPortStatus] = useState<STATUS>(STATUS.DISCONNECTED);
+  const [telemetryData, setTelemetryData] = useState<Telemetry[]>([
     DEFAULT_TELEMETRY_DATA,
   ]);
+
 
   const latest =
     telemetryData[telemetryData.length - 1] || DEFAULT_TELEMETRY_DATA;
@@ -22,7 +24,12 @@ function App() {
   const renderView = () => {
     switch (page) {
       case PAGE.SETTINGS:
-        return <SettingsPage />;
+        return <SettingsPage
+        portStatus={portStatus}
+        setPortStatus={setPortStatus}
+        telemetryData={telemetryData}
+        setTelemetryData={setTelemetryData}
+      />
       case PAGE.GRAPHS:
         return <GraphPage data={telemetryData} />;
       default:
@@ -42,7 +49,7 @@ function App() {
       backgroundImage:
         page === PAGE.TELEMETRY ? `url('/img/background-cropped.png')` : "none",
         backgroundPosition: "-10rem center",
-      backgroundRepeat: "no-repeat", 
+      backgroundRepeat: "repeat", 
     }}
     >
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/30 to-transparent" />
@@ -68,7 +75,7 @@ function App() {
       >
         <div className="flex flex-row h-full">
           <div className="px-8 lg:px-16 py-8">
-            <LeftPane data={latest} status={portStatus} />
+            <LeftPane data={latest} serial_status={portStatus} telemetry_status={STATUS.DISCONNECTED} />
           </div>
           <div className="flex-1 px-4 sm:px-6 md:px-8 overflow-y-auto">
             {renderView()}

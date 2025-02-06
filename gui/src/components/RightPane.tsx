@@ -1,12 +1,12 @@
 
-import { TelemetryData } from "../types";
+import { Telemetry } from "../types";
 
 
 const calculatePercentage = (value: number, max: number) =>
   (Math.min(value, max) / max) * 100;
 
 interface Props {
-  data: TelemetryData
+  data: Telemetry
 }
 
 const RightPane = ({data} : Props) => {

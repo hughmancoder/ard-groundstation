@@ -1,50 +1,43 @@
-# React + TypeScript + Vite
+# GUI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?&logo=TypeScript&style=for-the-badge" />
+<img alt="React" src="https://img.shields.io/badge/-React-61DAFB?&logo=React&style=for-the-badge" />
 
-Currently, two official plugins are available:
+## Setup
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+install npm and node on your machine
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+cd gui # if not already in the gui directory
+npm install
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Overview
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+- The GUI is built using React, TypeScript and tailwind.css.
+- The GUI reads from a serial port from the [Web Serial API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API) to get telemetry data from the groundstation.
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+- Important: check browser [compatibility](https://developer.mozilla.org/en-US/docs/Web/API/Web_Serial_API#browser_compatibility) for the Web Serial API
+
+## Notes
+
+List serial ports/
+
+```javascript
+# from browser console
+navigator.serial.getPorts().then(ports => console.log(ports));
+```
+
+```bas
+# from terminal
+ls /dev/tty.*
+```
+
+## Simulate Serial Port
+
+```bash
+ socat -d -d pty,raw,echo=0 pty,raw,echo=0 # create serial port
+ cd test
+ python simulate_telemetry_serial.py
 ```

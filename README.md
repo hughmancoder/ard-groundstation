@@ -1,55 +1,33 @@
 # Adept Rocketry Ground Station
 
-<!-- ![ARD](groundstation_ui/public/logos/ARD_yellow_logo.png) -->
-<img alt="Python" src="https://img.shields.io/badge/-Python-ffbc03?&logo=Python&style=for-the-badge" />
-<img alt="Flask" src="https://img.shields.io/badge/-Flask-000000?&logo=Flask&style=for-the-badge" />
-<img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?&logo=TypeScript&style=for-the-badge" />
-<img alt="React" src="https://img.shields.io/badge/-React-61DAFB?&logo=React&style=for-the-badge" />
-<img alt="Arduino" src="https://img.shields.io/badge/-Arduino-00979D?&logo=Arduino&style=for-the-badge" />
-<img alt="C" src="https://img.shields.io/badge/-C-A8B9CC?&logo=C&style=for-the-badge" />
+![ARD](gui/public/logos/ARD_yellow_logo.png)
 
+## About
 
-## Installation
+Welcome to Adept Rocketry Division's Groundstation. This repo consists of the GUI code and the embedded system code which resides on the teensy microcontroller.
 
-### Flask Server
-```bash
-cd groundstation
-rm -rf myenv
-python3 -m venv myenv
-source myenv/bin/activate
-pip install -r requirements.txt
-cd ..
-```
+## Getting Started
 
-### Frontend
+Our GUI reads from a serial port to get telemetry data from the rocket. The embedded system code sends telemetry data over the serial port. Information on how to set up the GUI and the embedded system can be found in the following READMEs
 
-```bash
-cd groundstation_ui
-npm install
-cd ..
-```
+### GUI
 
-### Run the groundstation server
+[Gui README](gui/README.md)
 
-```make run_groundstation```
+![schematic](gui/public/demo/telemetry.png)
 
-### Run the groundstation ui
+## Embedded systems
 
-```make run_groundstation_ui```
+[Embedded README](embedded/README.md)
 
-## Planned Features
+## Features
 
-- [ ] Teensy System Integration
-- [ ] Add table
-- [ ] Graphs page
-- [ ] Export flight data to CSV
+- [x] Real-time telemetry data
+- [x] Graphs page
+- [x] Settings page
+- [ ] Deploy to github pages
 - [ ] More robust disconnect mechanism (disconnect regardless of connection failure)
-- [ ] Clean up code and add hooks to seperate custom hook
+- [ ] Teensy System Integration
+- [ ] Export flight data to CSV
 - [ ] Database to save past flights
-- [ ] Simulation Mode
-- [ ] Concurrent guis through a distributed system
-
-## Other
-
-Free port 
-lsof -i :5001
+- [ ] Responsive UI (Gui can be used on phones/tablets)

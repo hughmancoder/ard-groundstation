@@ -1,9 +1,9 @@
 import { TelemetryPlot } from '@/components/TelemetryPlot';
-import { PLOT_METADATA, TelemetryData } from "@/types";
+import { PLOT_METADATA, Telemetry } from "@/types";
 
 
 interface Props {
-    data: TelemetryData[];
+    data: Telemetry[];
   }
 
 const GraphPage = ({data}: Props) => {

@@ -1,12 +1,13 @@
 
 
-
-export const BASE_URL = "http://127.0.0.1:5000" // NOTE: could add base URL to .env.local
-
 export const MAX_DATA_POINTS = 100; // Number of points to hold temporarily in memory (queue)
 
-// Enums
-export type STATUS = "connected" | "disconnected" | "awaiting";
+// export type STATUS = "connected" | "disconnected" | "awaiting";
+export enum STATUS {
+  CONNECTED = "connected",
+  DISCONNECTED = "disconnected",
+  AWAITING = "awaiting"
+}
 
 export enum PAGE {
   TELEMETRY = "telemetry",
@@ -20,7 +21,7 @@ export type Metric = {
   unit: string;
 };
 
-export type TelemetryData = {
+export type Telemetry = {
   time: number;
   bmpTemp: number;
   imuTemp: number;
@@ -34,7 +35,7 @@ export type TelemetryData = {
   angVelZ: number;
 };
 
-export const DEFAULT_TELEMETRY_DATA: TelemetryData = {
+export const DEFAULT_TELEMETRY_DATA: Telemetry = {
   time: 0,
   bmpTemp: 0,
   imuTemp: 0,
@@ -48,7 +49,7 @@ export const DEFAULT_TELEMETRY_DATA: TelemetryData = {
   angVelZ: 0,
 };
 
-export const DATA_COLUMNS: { key: keyof TelemetryData; label: string }[] = [
+export const DATA_COLUMNS: { key: keyof Telemetry; label: string }[] = [
   { key: "time", label: "Time" },
   { key: "bmpTemp", label: "BMP Temp" },
   { key: "imuTemp", label: "IMU Temp" },
@@ -62,7 +63,7 @@ export const DATA_COLUMNS: { key: keyof TelemetryData; label: string }[] = [
   { key: "angVelZ", label: "Ang Vel Z" },
 ];
 
-export const PLOT_METADATA: { key: keyof TelemetryData; label: string, color: string }[] = [
+export const PLOT_METADATA: { key: keyof Telemetry; label: string, color: string }[] = [
   { key: "bmpTemp", label: "BMP Temp", color: "#ff6730" },    
   { key: "imuTemp", label: "IMU Temp", color: "#ff9b30" },    
   { key: "pressure", label: "Pressure", color: "#ffba30" },    

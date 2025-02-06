@@ -1,4 +1,4 @@
-import { TelemetryData } from "@/types";
+import { Telemetry } from "@/types";
 import React from "react";
 import {
   LineChart,
@@ -12,9 +12,9 @@ import {
 export type ChartData = Record<string, number>;
 
 interface TelemetryPlotProps {
-  data: TelemetryData[];
+  data: Telemetry[];
   title: string;
-  dataKey: keyof TelemetryData;
+  dataKey: keyof Telemetry;
   color?: string;
 }
 
