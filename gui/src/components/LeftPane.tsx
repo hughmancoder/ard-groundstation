@@ -1,34 +1,34 @@
-import { Status, Metric as TMetric, TelemetryData } from "../types";
+import { STATUS, Metric as TMetric, TelemetryData } from "../types";
 import { Metric } from "./Metric";
 
-const iconColors: Record<Status, string> = {
+const iconColors: Record<STATUS, string> = {
   connected: "text-green",
   awaiting: "text-yellow",
   disconnected: "text-gray-600",
 };
 
 
-const labelColors: Record<Status, string> = {
+const labelColors: Record<STATUS, string> = {
   connected: "text-white",
   awaiting: "text-white",
   disconnected: "text-gray-600/50",
 };
 
 
-const getIconColor = (status: Status): string => iconColors[status];
-const getLabelColor = (status: Status): string => labelColors[status]; 
+const getIconColor = (status: STATUS): string => iconColors[status];
+const getLabelColor = (status: STATUS): string => labelColors[status]; 
 
 
 interface Props {
   data: TelemetryData;
-  status: Status;
+  status: STATUS;
 }
 
 const LeftPane = ({ data, status } : Props) => {
 
   const connectionData = [
     { title: "Serial Port", status: status },
-    { title: "Sensor Status", status: "disconnected" as Status },
+    { title: "Sensor Status", status: "disconnected" as STATUS },
   ];
 
   const metrics: TMetric[] = [

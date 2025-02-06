@@ -1,3 +1,4 @@
+/*
 import { View } from '@/types';
 import React from 'react';
 
@@ -36,3 +37,4 @@ const NavigationMenu: React.FC<NavigationMenuProps> = ({ view, setView }) => {
 }
 
 export default NavigationMenu;
+*/

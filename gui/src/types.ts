@@ -1,16 +1,18 @@
 
 
-// NOTE: could add base URL to .env.local
-export const BASE_URL = "http://127.0.0.1:5000" // "http://192.168.1.209:5000"
+
+export const BASE_URL = "http://127.0.0.1:5000" // NOTE: could add base URL to .env.local
 
 export const MAX_DATA_POINTS = 100; // Number of points to hold temporarily in memory (queue)
 
 // Enums
-export type Status = "connected" | "disconnected" | "awaiting";
-export type View = "telemetry" | "settings" | "details";
+export type STATUS = "connected" | "disconnected" | "awaiting";
 
-export type View = "telemetry" | "settings" | "details";
-export const VIEWS: View[] = ["telemetry", "settings", "details"];
+export enum PAGE {
+  TELEMETRY = "telemetry",
+  SETTINGS = "settings",
+  GRAPHS = "graphs"
+}
 
 export type Metric = {
   title: string;
@@ -32,7 +34,7 @@ export type TelemetryData = {
   angVelZ: number;
 };
 
-export const defaultTelemetryData: TelemetryData = {
+export const DEFAULT_TELEMETRY_DATA: TelemetryData = {
   time: 0,
   bmpTemp: 0,
   imuTemp: 0,
@@ -46,7 +48,6 @@ export const defaultTelemetryData: TelemetryData = {
   angVelZ: 0,
 };
 
-// Column keys and display names
 export const DATA_COLUMNS: { key: keyof TelemetryData; label: string }[] = [
   { key: "time", label: "Time" },
   { key: "bmpTemp", label: "BMP Temp" },

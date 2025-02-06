@@ -10,7 +10,7 @@ export const Metric: React.FC<Props> = ({ metrics, large = false }) => {
   return (
     <div className="flex flex-col">
       <span className="text-gray-600">{title}</span>
-      <span className={large ? "text-2xl" : "text-lg"}>
+      <span className={large ? "text-3xl" : "text-lg"}>
         {value} {unit}
       </span>
     </div>
