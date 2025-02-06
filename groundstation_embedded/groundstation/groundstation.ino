@@ -7,7 +7,7 @@ LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 #define RFM95_RST 1  // Reset pin
 #define RFM95_CS 10   // Chip Select (NSS) pin
-#define RFM95_INT -1  // Interrupt pin (connected to DIO0). Set to -1 if unused
+#define RFM95_INT -1  // Interrupt pin (connected to DIO0). Set to -1 if unused # note: 14
 #define RF95_FREQ 915.0  // Frequency for LoRa communication
 #define BAUD_RATE 115200  // Baud rate for Serial communication/Users/hughsignoriello/Repos/ard-groundstation/groundstation_embedded/prototype/prototype.ino
 

@@ -1,4 +1,4 @@
-import { BASE_URL } from "./types";
+import { BASE_URL } from "../types";
 
 export const fetchEndpoint = async (endpoint: string, options = {}) => {
     try {
@@ -14,3 +14,4 @@ export const fetchEndpoint = async (endpoint: string, options = {}) => {
       throw error; 
     }
   };
+

@@ -1,7 +1,8 @@
+/*
 const PageSwitch = () => {
   return (
     <>
-      {/* <div className="fixed bottom-20 left-10 flex justify-between pt-4">
+      <div className="fixed bottom-20 left-10 flex justify-between pt-4">
             <div className="flex items-center w-80 text-gray-800">
               <button
                 onClick={() => setView("telemetry")}
@@ -24,9 +25,11 @@ const PageSwitch = () => {
                 Settings
               </button>
             </div>
-          </div>  */}
+          </div>  
     </>
   );
 };
 
 export default PageSwitch;
+
+*/

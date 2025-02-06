@@ -1,8 +1,13 @@
 
 
+// NOTE: could add base URL to .env.local
 export const BASE_URL = "http://127.0.0.1:5000" // "http://192.168.1.209:5000"
-export const MAX_DATA_POINTS = 100;
+
+export const MAX_DATA_POINTS = 100; // Number of points to hold temporarily in memory (queue)
+
+// Enums
 export type Status = "connected" | "disconnected" | "awaiting";
+export type View = "telemetry" | "settings" | "details";
 
 export type Metric = {
   title: string;

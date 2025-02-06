@@ -1,14 +1,3 @@
-import { useEffect, useState } from "react";
-import LeftPane from "./components/LeftPane";
-import RightPane from "./components/RightPane";
-import {
-  defaultTelemetryData,
-  MAX_DATA_POINTS,
-  PLOT_METADATA,
-  Status,
-  TelemetryData,
-} from "./types";
-import { Metric } from "./components/Metric";
 import {
   Select,
   SelectContent,
@@ -18,13 +7,25 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "./components/ui/button";
-import { fetchEndpoint } from "./fetch";
-import { socket } from "./socket";
+import { useEffect, useState } from "react";
+import { fetchEndpoint } from "./api/fetch";
+import { socket } from "./api/socket";
+import Details from "./components/Details";
+import LeftPane from "./components/LeftPane";
+import { Metric } from "./components/Metric";
 import NavigationMenu from "./components/NavigationMenu";
+import RightPane from "./components/RightPane";
+import { Button } from "./components/ui/button";
+import {
+  defaultTelemetryData,
+  MAX_DATA_POINTS,
+  Status,
+  TelemetryData,
+  View
+} from "./types";
+
 
 function App() {
-  type View = "telemetry" | "settings" | "details";
   const [view, setView] = useState<View>("telemetry");
   const [ports, setPorts] = useState<string[]>([]);
   const [selectedPort, setSelectedPort] = useState<string | null>(null);
@@ -47,7 +48,6 @@ function App() {
         setTelemetryData((prevData) => {
           const newData = [...prevData, data];
           if (newData.length > MAX_DATA_POINTS) {
-            // Remove the oldest data points
             newData.splice(0, newData.length - MAX_DATA_POINTS);
           }
           return newData;
