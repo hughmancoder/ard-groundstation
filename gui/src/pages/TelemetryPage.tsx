@@ -1,4 +1,5 @@
 import { Metric } from "@/components/Metric";
+import rocketImage from '@/assets/rocket.png';
 
 function TelemetryPage({
     rotationAngle,
@@ -28,7 +29,7 @@ function TelemetryPage({
             
             <img
                 className="relative z-0 w-[16vh] max-w-full h-auto"
-                src="/img/rocket.png"
+                src={rocketImage}
                 alt="Rocket"
                 style={{ transform: `translateY(-5px) rotate(${rotationAngle}deg)` }}
             />

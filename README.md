@@ -16,6 +16,26 @@ Our GUI reads from a serial port to get telemetry data from the rocket. The embe
 
 ![schematic](gui/public/demo/telemetry.png)
 
+## Deployment
+
+The gui is deployed to github pages so we don't have to run it from a terminal. It can be run manually by following the instructions in the gui README.
+
+Deployment script in deployment.yml
+
+```bash
+# deploy manually 
+cd gui
+npm install gh-pages --save-dev
+npm run deploy
+
+# deploys automatically with github actions with git commits
+git add .
+git commit -m "Deploy to GitHub Pages"
+git push origin main
+```
+
+
+
 ## Embedded systems
 
 [Embedded README](embedded/README.md)

@@ -1,3 +1,5 @@
+/* 
+// NOTE: deprecated
 import { BASE_URL } from "../types";
 
 export const fetchEndpoint = async (endpoint: string, options = {}) => {
@@ -15,3 +17,4 @@ export const fetchEndpoint = async (endpoint: string, options = {}) => {
     }
   };
 
+ */
