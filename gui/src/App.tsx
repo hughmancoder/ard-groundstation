@@ -15,7 +15,6 @@ function App() {
     DEFAULT_TELEMETRY_DATA,
   ]);
 
-
   const latest =
     telemetryData[telemetryData.length - 1] || DEFAULT_TELEMETRY_DATA;
   const rotationAngle = latest.angVelZ || 0;
@@ -55,7 +54,7 @@ function App() {
     >
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/30 to-transparent" />
       
-      {/* TODO: ICOND to left */}
+      
       <header className="fixed top-0 left-0 right-0 shadow px-8 lg:px-16 py-8 z-10">
         <nav className="flex flex-row space-x-16">
           {Object.values(PAGE).map((item) => (

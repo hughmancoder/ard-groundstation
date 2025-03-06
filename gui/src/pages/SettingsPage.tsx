@@ -10,6 +10,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { STATUS, Telemetry } from "@/types";
+// import { startMockTelemetry } from "@/mock";
 
 type SettingsPageProps = {
   portStatus: STATUS;
@@ -29,9 +30,19 @@ export default function SettingsPage({
   const [rawData, setRawData] = useState<string>("");
   const readerRef = useRef<ReadableStreamDefaultReader | null>(null); 
 
+  // MOCK data
+  /*
+    useEffect(() => {
+      const stopMock = startMockTelemetry((packet) => {
+        setTelemetryData((prev) => [...prev, packet]);
+      });
+  
+      return () => stopMock(); // Cleanup on unmount
+    }, []);
+  */
+
   // Check if "connected" or not
   const isConnected = portStatus === STATUS.CONNECTED;
-
   const loadPorts = useCallback(async () => {
     try {
       console.log("INFO: Requesting serial ports");
@@ -177,7 +188,8 @@ export default function SettingsPage({
           Clear ports
         </Button>
         <Button
-          onClick={isConnected ? disconnectPort : connectPort}
+          // onClick={isConnected ? disconnectPort : startMockTelemetry} // NOTE: for mock data
+          onClick={isConnected ? disconnectPort : connectPort} 
           disabled={!selectedPort}
           className={`text-white w-full sm:w-auto ${
             selectedPort

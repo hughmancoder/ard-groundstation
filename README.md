@@ -14,7 +14,6 @@ Our GUI reads from a serial port to get telemetry data from the rocket. The embe
 
 [Gui README](gui/README.md)
 
-![schematic](gui/public/demo/telemetry.png)
 
 ## Deployment
 

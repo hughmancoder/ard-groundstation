@@ -32,7 +32,7 @@ void loop() {
   lcd.print("Sample : ");
   lcd.print(sampleData[index].time);
 
-
+  
   printTelemetryAsCSV(sampleData[index]); 
   // writeTelemeryAsBinaryStream(sampleData[index]);
   
