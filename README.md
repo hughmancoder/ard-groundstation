@@ -1,28 +1,58 @@
 # Adept Rocketry Ground Station
 
-![ARD](gui/public/logos/ARD_yellow_logo.png)
+## Hardware
+
+- Teensy 4.1
+- LoRa Module
+
+## Libraries
+
+- RadioHead
+- LiquidCrystal I2C (Frank de Brabander)
+
+## Circuit schematic
+
+![Groundstation circuit schematic](embedded/resources/GroundStation.png)
+
+
+## Serial data packet structure
+
+```c
+struct TelemetryPacket {
+  uint32_t time;                   // 4 bytes
+  float altitude;                  // 4 bytes
+  float bmpTemp;                   // 4 bytes
+  float imuTemp;                   // 4 bytes
+  float pressure;                  // 4 bytes
+  float accX, accY, accZ;          // 12 bytes
+  float angVelX, angVelY, angVelZ; // 12 bytes
+} __attribute__((packed));         // Ensure no padding in the structure
+```
+
+Refer to [Telemetry.hpp](embedded/core/Telemetry.hpp) for the packet structure and shared utility functions.
+
+
+## GUI
 
 ### Telemetry (Active)
-![Telemetry Active](gui/images/gui-images/telemetry-active.png)
+![Telemetry Active](images/gui-images/telemetry-active.png)
 
 ### Telemetry (Inactive)
-![Telemetry](gui/images/gui-images/telemetry.png)
+![Telemetry](images/gui-images/telemetry.png)
 
 ### GUI Graphs
-![Graphs](gui/images/gui-images/graphs.png)
+![Graphs](images/gui-images/graphs.png)
 
 ### Settings (Placeholder Mock Data)
-![Settings](gui/images/gui-images/settings.png)
-
-
+![Settings](images/gui-images/settings.png)
 
 ## About
 
-Welcome to Adept Rocketry Division's Groundstation. This repo consists of the GUI code and the embedded system code which resides on the teensy microcontroller.
+Adept Rocketry Division's Groundstation. This repo consists of a web-based GUI  and the embedded system code which resides on the teensy microcontroller.
 
 ## Getting Started
 
-Our GUI reads from a serial port to get telemetry data from the rocket. The embedded system code sends telemetry data over the serial port. Information on how to set up the GUI and the embedded system can be found in the following READMEs
+The GUI reads from a serial port to get telemetry data from the rocket. The embedded system code sends telemetry data over the serial port. Information on how to set up the GUI is available in its README. Embedded-system details are documented below.
 
 ### GUI
 
@@ -47,20 +77,14 @@ git commit -m "Deploy to GitHub Pages"
 git push origin main
 ```
 
-
-
-## Embedded systems
-
-[Embedded README](embedded/README.md)
-
 ## Features
 
 - [x] Real-time telemetry data
 - [x] Graphs page
 - [x] Settings page
-- [ ] Deploy to github pages
+- [x] Deploy to github pages
+- [x] Teensy System Integration
 - [ ] More robust disconnect mechanism (disconnect regardless of connection failure)
-- [ ] Teensy System Integration
 - [ ] Export flight data to CSV
 - [ ] Database to save past flights
 - [ ] Responsive UI (Gui can be used on phones/tablets)
