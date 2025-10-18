@@ -2,6 +2,20 @@
 
 ![ARD](gui/public/logos/ARD_yellow_logo.png)
 
+### Telemetry (Active)
+![Telemetry Active](gui/images/gui-images/telemetry-active.png)
+
+### Telemetry (Inactive)
+![Telemetry](gui/images/gui-images/telemetry.png)
+
+### GUI Graphs
+![Graphs](gui/images/gui-images/graphs.png)
+
+### Settings (Placeholder Mock Data)
+![Settings](gui/images/gui-images/settings.png)
+
+
+
 ## About
 
 Welcome to Adept Rocketry Division's Groundstation. This repo consists of the GUI code and the embedded system code which resides on the teensy microcontroller.
